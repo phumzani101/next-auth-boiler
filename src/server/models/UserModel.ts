@@ -1,4 +1,5 @@
 import { Schema, model, models, Document } from "mongoose";
+import bcrypt from "bcrypt";
 
 export interface UserType extends Document {
   name: string;
@@ -27,6 +28,18 @@ const UserSchema = new Schema<UserType>(
   { timestamps: true }
 );
 
+UserSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  const salt = await bcrypt.genSalt(10);
+  // @ts-ignore: Unreachable code error
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+UserSchema.methods.authenticate = async function (userPassword: string) {
+  return await bcrypt.compare(userPassword, this.password);
+};
+
 const UserModel = models.User || model("User", UserSchema);
 
 // Create a Mongoose schema for the Account model
@@ -50,7 +63,7 @@ const AccountSchema = new Schema({
   session_state: String,
 });
 
-const AccountModel = model("Account", AccountSchema);
+const AccountModel = models.Account || model("Account", AccountSchema);
 
 // Create a Mongoose schema for the Session model
 const SessionSchema = new Schema({
@@ -65,7 +78,7 @@ const SessionSchema = new Schema({
   expires: Date,
 });
 
-const SessionModel = model("Session", SessionSchema);
+const SessionModel = models.Session || model("Session", SessionSchema);
 
 // Create a Mongoose schema for the VerificationToken model
 const VerificationTokenSchema = new Schema({
@@ -74,14 +87,10 @@ const VerificationTokenSchema = new Schema({
   expires: Date,
 });
 
-const VerificationTokenModel = model(
-  "VerificationToken",
-  VerificationTokenSchema
-);
+const VerificationTokenModel =
+  models.VerificationToken ||
+  model("VerificationToken", VerificationTokenSchema);
 
-module.exports = {
-  AccountModel,
-  SessionModel,
-  UserModel,
-  VerificationTokenModel,
-};
+export { AccountModel, SessionModel, UserModel, VerificationTokenModel };
+
+export default UserModel;

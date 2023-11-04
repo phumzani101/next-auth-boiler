@@ -5,7 +5,7 @@ import SignOut from "./SignOut";
 
 const Navbar = async () => {
   const session = await auth();
-  console.log(session);
+
   return (
     <>
       <header className="absolute bg-white inset-x-0 top-0 z-50">
