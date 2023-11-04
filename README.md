@@ -11,6 +11,8 @@ NEXTAUTH_SECRET=ujzhfnijvsomf
 
 GITHUB_ID=gfgfg8hvbnv9
 GITHUB_SECRET=fsiuhfvbniv47
+
+MONGODB_URL=mongodb://127.0.0.1:27017/test
 ```
 
 Run the development server:

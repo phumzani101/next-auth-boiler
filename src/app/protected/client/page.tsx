@@ -1,7 +1,15 @@
+"use client";
+import { useSession } from "next-auth/react";
 import React from "react";
 
 const ClientPage = () => {
-  return <div>Protected Client Page</div>;
+  const { data } = useSession();
+  return (
+    <div>
+      <h1>Protected Client Page</h1>
+      <p>Logged in as: {data?.user?.name}</p>
+    </div>
+  );
 };
 
 export default ClientPage;

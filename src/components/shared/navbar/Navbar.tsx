@@ -1,6 +1,7 @@
 import { auth } from "@/server/actions/authAction";
 import Link from "next/link";
 import React from "react";
+import SignOut from "./SignOut";
 
 const Navbar = async () => {
   const session = await auth();
@@ -85,6 +86,7 @@ const Navbar = async () => {
                 >
                   Dashboard
                 </Link>
+                <SignOut />
               </>
             ) : (
               <>

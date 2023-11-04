@@ -1,8 +1,11 @@
-"use client";
-import { signIn } from "next-auth/react";
 import React from "react";
+import SocialLogin from "../components/SocialLogin";
 
-const SigninPage = () => {
+const SigninPage = ({
+  searchParams: { callbackUrl },
+}: {
+  searchParams: { callbackUrl: string };
+}) => {
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -72,17 +75,7 @@ const SigninPage = () => {
             </button>
           </div>
         </form>
-        <div className="mt-10 flex items-center justify-center gap-x-6">
-          <button
-            onClick={() => signIn("github", { callbackUrl: "/" })}
-            className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Signin with Github
-          </button>
-          <button className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-            Signin with Google
-          </button>
-        </div>
+        <SocialLogin callbackUrl={callbackUrl} />
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Not a member?
